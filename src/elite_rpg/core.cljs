@@ -13,18 +13,19 @@
     (set! (.. container -height) 600)
     container))
 
-(defn process-char [ev]
-  (let [code (-> ev .-code keyword)]
-    (case code
-      :ArrowLeft (println "left")
-      :ArrowRight (println "right")
-      ;else
-      (println "Nothing"))))
+(defn activate-key-listeners []
+  (letfn
+    [
+     (on-keydown [ev] (scene/on-input (-> ev .-code keyword) true))
+     (on-keyup [ev] (scene/on-input (-> ev .-code keyword) false))]
 
+    (.addEventListener js/document.body "keydown" on-keydown)
+    (.addEventListener js/document.body "keyup" on-keyup)))
 
 (defn init-game-engine []
   (println "Starting Elite RPG Game")
-  (.addEventListener js/document.body "keydown" process-char)
+  (activate-key-listeners)
+
   (let [pixi-dom (.querySelector js/document "#pixi")
         app (js/PIXI.Application.
               #js{:width 800
