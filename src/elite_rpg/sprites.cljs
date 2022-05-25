@@ -12,7 +12,8 @@
     ; (set! (.-anchor.x sprite) 0.5)
     ; (set! (.-anchor.y sprite) 0.5)
     ; (set! (.-rotation sprite) rotation)
-    (.addChild container sprite)))
+    (.addChild container sprite)
+    sprite))
 
 
 (defn draw-sample [app]

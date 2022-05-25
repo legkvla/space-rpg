@@ -21,16 +21,29 @@
                   :height 600
                   :backgroundColor 0x000000})
         ; container (js/PIXI.Container.)
-        text (js/PIXI.Text. "Elite RPG Game" #js{:fontFamily "Arial" :fontSize 50 :fill "red"})]
-    (if-let [child (.. pixi-dom -lastElementChild)]
-      (.removeChild pixi-dom child))
+        text (js/PIXI.Text. "Elite RPG Game" #js{:fontFamily "Arial" :fontSize 50 :fill "red"})
+        a:ship (atom nil)
+        a:pos (atom 250)]
+    ; (if-let [child (.. pixi-dom -lastElementChild)]
+    ;   (.removeChild pixi-dom child))
     (.appendChild pixi-dom (.. app -view))
     (r/load-resources
       (fn [l]
-        (sprites/draw-sample app)))
+        (reset! a:ship
+          (sprites/draw-sample app))))
 
     (.. text -position (set 250 50))
-    (.. app -stage (addChild text))))
+    (.. app -stage (addChild text))
+
+    (.. app -ticker
+      (add
+        (fn [delta]
+          (when-let [ship @a:ship]
+            (swap! a:pos inc)
+            (set! (.-position.x ship) @a:pos)
+            (.. text -position (set 250 50))))))
+
+    (.start app)))
 
 
 (set! (.-onload js/window) init-game-engine)
