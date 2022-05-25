@@ -23,14 +23,16 @@
         ; container (js/PIXI.Container.)
         text (js/PIXI.Text. "Elite RPG Game" #js{:fontFamily "Arial" :fontSize 50 :fill "red"})
         a:ship (atom nil)
-        a:pos (atom 250)]
+        a:ship2 (atom nil)
+        a:pos (atom 250)
+        a:pos2 (atom 250)]
     ; (if-let [child (.. pixi-dom -lastElementChild)]
     ;   (.removeChild pixi-dom child))
     (.appendChild pixi-dom (.. app -view))
     (r/load-resources
       (fn [l]
-        (reset! a:ship
-          (sprites/draw-sample app))))
+        (reset! a:ship (sprites/draw-sample app))
+        (reset! a:ship2 (sprites/draw-sample app))))
 
     (.. text -position (set 250 50))
     (.. app -stage (addChild text))
@@ -40,8 +42,10 @@
         (fn [delta]
           (when-let [ship @a:ship]
             (swap! a:pos inc)
+            (swap! a:pos2 dec)
             (set! (.-position.x ship) @a:pos)
-            (.. text -position (set 250 50))))))
+            (set! (.-position.x @a:ship2) @a:pos2)))))
+            ; (.. text -position (set 250 50))))))
 
     (.start app)))
 

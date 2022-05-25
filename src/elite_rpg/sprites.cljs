@@ -17,5 +17,4 @@
 
 
 (defn draw-sample [app]
-  (doto (.-stage app)
-    (draw-sprite :ship 370 500 64 64)))
+  (draw-sprite (.-stage app) :ship 370 500 64 64))
