@@ -1,7 +1,7 @@
 (ns elite-rpg.core
     (:require
       [elite-rpg.resources :as r]
-      [elite-rpg.sprites :as sprites]))
+      [elite-rpg.scene :as scene]))
 
 (enable-console-print!)
 
@@ -20,32 +20,16 @@
               #js{:width 800
                   :height 600
                   :backgroundColor 0x000000})
-        ; container (js/PIXI.Container.)
-        text (js/PIXI.Text. "Elite RPG Game" #js{:fontFamily "Arial" :fontSize 50 :fill "red"})
-        a:ship (atom nil)
-        a:ship2 (atom nil)
-        a:pos (atom 250)
-        a:pos2 (atom 250)]
-    ; (if-let [child (.. pixi-dom -lastElementChild)]
-    ;   (.removeChild pixi-dom child))
+        text (js/PIXI.Text. "Elite RPG Game" #js{:fontFamily "Arial" :fontSize 50 :fill "red"})]
+
     (.appendChild pixi-dom (.. app -view))
-    (r/load-resources
-      (fn [l]
-        (reset! a:ship (sprites/draw-sample app))
-        (reset! a:ship2 (sprites/draw-sample app))))
+    (r/load-resources #(scene/build-scene app))
 
     (.. text -position (set 250 50))
     (.. app -stage (addChild text))
 
     (.. app -ticker
-      (add
-        (fn [delta]
-          (when-let [ship @a:ship]
-            (swap! a:pos inc)
-            (swap! a:pos2 dec)
-            (set! (.-position.x ship) @a:pos)
-            (set! (.-position.x @a:ship2) @a:pos2)))))
-            ; (.. text -position (set 250 50))))))
+      (add scene/on-tick))
 
     (.start app)))
 
