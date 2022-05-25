@@ -27,7 +27,7 @@
 (defn on-tick [delta]
   (when-let [ship (sprites/get-sprite :ship1)]
     (case @a:direction
-      :right (swap! a:ship-x inc)
-      :left (swap! a:ship-x dec)
+      :right (swap! a:ship-x + 5)
+      :left (swap! a:ship-x - 5)
       :none nil)
     (set! (.-position.x ship) @a:ship-x)))

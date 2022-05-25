@@ -30,14 +30,14 @@
         app (js/PIXI.Application.
               #js{:width 800
                   :height 600
-                  :backgroundColor 0x000000})
-        text (js/PIXI.Text. "Elite RPG Game" #js{:fontFamily "Arial" :fontSize 50 :fill "red"})]
+                  :backgroundColor 0x000000})]
+        ; text (js/PIXI.Text. "Elite RPG Game" #js{:fontFamily "Arial" :fontSize 50 :fill "red"})]
 
     (.appendChild pixi-dom (.. app -view))
     (r/load-resources #(scene/build-scene app))
 
-    (.. text -position (set 250 50))
-    (.. app -stage (addChild text))
+    ; (.. text -position (set 250 50))
+    ; (.. app -stage (addChild text))
 
     (.. app -ticker
       (add scene/on-tick))
