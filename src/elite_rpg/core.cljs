@@ -13,8 +13,18 @@
     (set! (.. container -height) 600)
     container))
 
+(defn process-char [ev]
+  (let [code (-> ev .-code keyword)]
+    (case code
+      :ArrowLeft (println "left")
+      :ArrowRight (println "right")
+      ;else
+      (println "Nothing"))))
+
+
 (defn init-game-engine []
   (println "Starting Elite RPG Game")
+  (.addEventListener js/document.body "keydown" process-char)
   (let [pixi-dom (.querySelector js/document "#pixi")
         app (js/PIXI.Application.
               #js{:width 800
